@@ -19,6 +19,8 @@ die "This script is for shell completion only\n"
 
 my $noop = sub {};
 
+$Getopt::Long::Complete::opt_bundling = 0;
+
 # this is gathered from emacs manpage and should be updated from time to time.
 GetOptionsWithCompletion(
     sub {
