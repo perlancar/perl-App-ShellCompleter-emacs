@@ -36,21 +36,21 @@ GetOptionsWithCompletion(
             my $ospec = $args{ospec};
             my $opt   = $args{opt};
             $log->tracef("Completing optval (opt=$opt)");
-            if ($opt eq 'file' || $opt eq 'find-file' || $opt eq 'visit') {
+            if ($opt eq '--file' || $opt eq '--find-file' || $opt eq '--visit') {
                 return complete_file(word => $word);
-            } elsif ($opt eq 'user' || $opt eq 'u') {
+            } elsif ($opt eq '--user' || $opt eq '-u') {
                 return complete_user(word => $word);
-            } elsif ($opt eq 'terminal' || $opt eq 't') {
-                return complete_user(word => $word);
-            } elsif ($opt eq 'load' || $opt eq 'l') {
-                return complete_user(word => $word);
-            } elsif ($opt eq 'load' || $opt eq 'l') {
-                return complete_user(word => $word);
-            } elsif ($opt eq 'insert') {
-                return complete_user(word => $word);
-            } elsif ($opt eq 'directory' || $opt eq 'L') {
+            } elsif ($opt eq '--terminal' || $opt eq '-t') {
+                return complete_file(word => $word);
+            } elsif ($opt eq '--load' || $opt eq '-l') {
+                return complete_file(word => $word);
+            } elsif ($opt eq '--script') {
+                return complete_file(word => $word);
+            } elsif ($opt eq '--insert') {
+                return complete_file(word => $word);
+            } elsif ($opt eq '--directory' || $opt eq '-L') {
                 return complete_user(word => $word, filter=>'d');
-            } elsif ($opt eq 'directory' || $opt eq 'L') {
+            } elsif ($opt eq '--color') {
                 return complete_array_elem(word => $word, array=>[qw/auto never always ansi8/]);
             }
             # XXX funcall/f -> list of Lisp functions
@@ -125,5 +125,3 @@ or, you can use L<shcompgen> to do that for you automatically.
 Now L<emacs> has bash completion:
 
  % emacs -n<tab>
-
-
