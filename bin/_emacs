@@ -1,0 +1,127 @@
+#!perl
+
+# DATE
+# VERSION
+
+# FRAGMENT id=shcompgen-hint completer=1 for=emacs
+
+use 5.010001;
+use strict;
+use warnings;
+use Log::Any '$log';
+
+use Complete::Unix qw(complete_user);
+use Complete::Util qw(complete_array_elem complete_file combine_answers);
+use Getopt::Long::Complete qw(GetOptionsWithCompletion);
+
+die "This script is for shell completion only\n"
+    unless $ENV{COMP_LINE} || $ENV{COMMAND_LINE};
+
+my $noop = sub {};
+
+# this is gathered from emacs manpage and should be updated from time to time.
+GetOptionsWithCompletion(
+    sub {
+        my %args  = @_;
+        my $type      = $args{type};
+        my $word      = $args{word};
+        if ($type eq 'arg') {
+            $log->tracef("Completing arg");
+            return complete_file(word => $word);
+            # XXX +number
+            # XXX +line:column
+        } elsif ($type eq 'optval') {
+            my $ospec = $args{ospec};
+            my $opt   = $args{opt};
+            $log->tracef("Completing optval (opt=$opt)");
+            if ($opt eq 'file' || $opt eq 'find-file' || $opt eq 'visit') {
+                return complete_file(word => $word);
+            } elsif ($opt eq 'user' || $opt eq 'u') {
+                return complete_user(word => $word);
+            } elsif ($opt eq 'terminal' || $opt eq 't') {
+                return complete_user(word => $word);
+            } elsif ($opt eq 'load' || $opt eq 'l') {
+                return complete_user(word => $word);
+            } elsif ($opt eq 'load' || $opt eq 'l') {
+                return complete_user(word => $word);
+            } elsif ($opt eq 'insert') {
+                return complete_user(word => $word);
+            } elsif ($opt eq 'directory' || $opt eq 'L') {
+                return complete_user(word => $word, filter=>'d');
+            } elsif ($opt eq 'directory' || $opt eq 'L') {
+                return complete_array_elem(word => $word, array=>[qw/auto never always ansi8/]);
+            }
+            # XXX funcall/f -> list of Lisp functions
+            # XXX name -> list of window names
+            # XXX font/fn -> list of font names
+            # XXX fg/bg/bd/... -> list of colors
+            # XXX display/d -> list of X display names (:0.0 only as default?)
+        }
+        return [];
+    },
+    'file|find-file|visit=s' => $noop,
+    'no-init-file|q' => $noop,
+    'no-site-file' => $noop,
+    'no-desktop' => $noop,
+    'quick|Q' => $noop,
+    'no-splash' => $noop,
+    'debug-init' => $noop,
+    'user|u=s' => $noop,
+    'terminal|t=s' => $noop,
+    'daemon' => $noop,
+    'version' => $noop,
+    'help' => $noop,
+
+    'funcall|f=s' => $noop,
+    'load|l=s' => $noop,
+    'eval|execute=s' => $noop,
+
+    'batch' => $noop,
+    'script=s' => $noop,
+    'insert=s' => $noop,
+    'kill' => $noop,
+    'directory|L=s' => $noop,
+
+    'name=s' => $noop,
+    'title|T=s' => $noop,
+    'reverse-video|r' => $noop, '-rv' => $noop,
+    'font=s' => $noop, '-fn=s' => $noop,
+    'xrm=s' => $noop,
+    'color=s' => $noop,
+    'border-width=i' => $noop, '-bw=i' => $noop,
+    'internal-border=i' => $noop, '-ib=i' => $noop,
+    'geometry|g=s' => $noop,
+    'line-spacing=i' => $noop, '-lsp=i' => $noop,
+    'vertical-scroll-bars' => $noop, '-vsb' => $noop,
+    'fullheight' => $noop, '-fh' => $noop,
+    'fullwidth' => $noop, '-fw' => $noop,
+    'maximized' => $noop, '-mm' => $noop,
+    'foreground-color=s' => $noop, '-fg' => $noop,
+    'background-color=s' => $noop, '-bg' => $noop,
+    'border-color=s' => $noop, '-bd' => $noop,
+    'cursor-color=s' => $noop, '-cs' => $noop,
+    'mouse-color=s' => $noop, '-ms' => $noop,
+    'no-bitmap-icon' => $noop, '-nbi' => $noop,
+    'iconic' => $noop,
+    'no-blinking-cursor' => $noop, '-nbc' => $noop,
+    'no-window-system' => $noop, '-nw' => $noop,
+    'basic-display|D' => $noop,
+);
+
+# ABSTRACT: Shell completer for emacs
+# PODNAME:
+
+=head1 SYNOPSIS
+
+To install, install this module and then in your bash (and/or bash startup
+file):
+
+ complete -C _emacs emacs
+
+or, you can use L<shcompgen> to do that for you automatically.
+
+Now L<emacs> has bash completion:
+
+ % emacs -n<tab>
+
+
