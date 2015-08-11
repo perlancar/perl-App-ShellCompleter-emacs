@@ -8,7 +8,7 @@
 use 5.010001;
 use strict;
 use warnings;
-use Log::Any '$log';
+#use Log::Any::IfLOG '$log';
 
 use Complete::Unix qw(complete_user);
 use Complete::Util qw(complete_array_elem complete_file combine_answers);
@@ -28,14 +28,14 @@ GetOptionsWithCompletion(
         my $type      = $args{type};
         my $word      = $args{word};
         if ($type eq 'arg') {
-            $log->tracef("Completing arg");
+            #$log->tracef("Completing arg");
             return complete_file(word => $word);
             # XXX +number
             # XXX +line:column
         } elsif ($type eq 'optval') {
             my $ospec = $args{ospec};
             my $opt   = $args{opt};
-            $log->tracef("Completing optval (opt=$opt)");
+            #$log->tracef("Completing optval (opt=$opt)");
             if ($opt eq '--file' || $opt eq '--find-file' || $opt eq '--visit') {
                 return complete_file(word => $word);
             } elsif ($opt eq '--user' || $opt eq '-u') {
