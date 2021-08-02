@@ -2,3 +2,4 @@ App-ShellCompleter-emacs-*
 .build
 *~
 nytprof*
+.DS_Store
